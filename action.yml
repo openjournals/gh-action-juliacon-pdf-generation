@@ -1,0 +1,58 @@
+name: JCon Paper
+description: Compile and generate Paper metadata
+inputs:
+  issue_id:
+    description: The review issue id for the paper
+    required: true
+  repository_url:
+    description: The repository URL of the submission containing the paper file
+    required: true
+  branch:
+    description: Git branch where the paper is located
+    required: false
+    default: ""
+outputs:
+  pdf_path:
+    description: "Path to the generated PDF file"
+    value: ${{ steps.compilation-result.outputs.paper_pdf_path }}
+  paper_file_path:
+    description: "Path to the paper's .tex source file"
+    value: ${{ steps.paper-finder.outputs.paper_file_path }}
+runs:
+  using: "composite"
+  steps:
+    - name: Install Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3.0
+        bundler-cache: true
+        cache-version: paper-preprocessing
+        bundler: Gemfile.lock
+        working-directory: ${{ github.action_path }}
+    - name: Preprocess paper files
+      id: paper-finder
+      shell: bash
+      env:
+        ISSUE_ID: ${{ inputs.issue_id }}
+        REPO_URL: ${{ inputs.repository_url }}
+        PAPER_BRANCH: ${{ inputs.branch }}
+        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
+      run: |
+        bundle exec ruby ${{ github.action_path }}/preprocess_paper.rb
+    - name: Generate pdf
+      uses: xu-cheng/texlive-action/full@v1
+      with:
+        run: |
+          cd ${{ steps.paper-finder.outputs.paper_dir }}
+          latexmk -c
+          latexmk -bibtex -pdf paper.tex
+          latexmk -c
+    - name: Check results
+      id: compilation-result
+      shell: bash
+      run: |
+        ruby ${{ github.action_path }}/check_result.rb ${{ steps.paper-finder.outputs.paper_dir }} pdf
+
+branding:
+  icon: file-text
+  color: blue
