@@ -1,2 +1,3 @@
-# gh-action-juliacon-pdf-generation
-GitHub action to compile a pdf for the JuliaCon proceedings from a .tex source file
+# Open Journals :: JuliaCon paper generation 
+
+GitHub action to compile pdf files for the [JuliaCon proceedings](https://proceedings.juliacon.org/) from a `.tex` source file
