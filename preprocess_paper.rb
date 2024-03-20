@@ -123,26 +123,58 @@ system("echo '  ✅ File updated: #{bib_file_path}'")
 
 system("echo 'paper_dir=#{paper_dir}' >> $GITHUB_OUTPUT")
 
-crossref_args = <<-PANDOCARGS
--V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
--V doi_batch_id=#{SecureRandom.hex} \
--V formatted_doi=#{metadata['doi']} \
--V archive_doi=#{metadata['archive_doi'] || "https://doi.org/10.5281/zenodo.10144853"} \
--V review_issue_url=#{metadata['software_review_url']} \
--V paper_url=https://proceedings.juliacon.org/papers/#{metadata['doi']} \
--V paper_pdf_url=https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf \
--V citations="" \
--V authors="#{crossref_authors(issue.paper.authors)}" \
--V month=#{Time.now.month} \
--V day=#{Time.now.day} \
--V year=#{year} \
--V issue=#{journal_issue} \
--V volume=#{volume} \
--V page=#{metadata["page"]} \
--V title="#{metadata['title']}" \
--f markdown #{paper_dir + '/paper.tex'} -t opendocument -o #{paper_dir + '/paper.crossref.xml'} \
---template #{paper_dir + '/crossref-template.xml'}
-PANDOCARGS
+# crossref_args = <<-PANDOCARGS
+# -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
+# -V doi_batch_id=#{SecureRandom.hex} \
+# -V formatted_doi=#{metadata['doi']} \
+# -V archive_doi=#{metadata['archive_doi'] || "https://doi.org/10.5281/zenodo.10144853"} \
+# -V review_issue_url=#{metadata['software_review_url']} \
+# -V paper_url=https://proceedings.juliacon.org/papers/#{metadata['doi']} \
+# -V paper_pdf_url=https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf \
+# -V citations="" \
+# -V authors="#{crossref_authors(issue.paper.authors)}" \
+# -V month=#{Time.now.month} \
+# -V day=#{Time.now.day} \
+# -V year=#{year} \
+# -V issue=#{journal_issue} \
+# -V volume=#{volume} \
+# -V page=#{metadata["page"]} \
+# -V title="#{metadata['title']}" \
+# -f markdown #{paper_dir + '/paper.tex'} -t opendocument -o #{paper_dir + '/paper.crossref.xml'} \
+# --template #{paper_dir + '/crossref-template.xml'}
+# PANDOCARGS
+
+pandoc_defaults = {
+  variables: {
+    timestamp: Time.now.strftime('%Y%m%d%H%M%S'),
+    doi_batch_id: SecureRandom.hex,
+    formatted_doi: metadata['doi'],
+    archive_doi: metadata['archive_doi'] || "Pending",
+    review_issue_url: metadata['software_review_url'],
+    paper_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}",
+    paper_pdf_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf",
+    citations: "",
+    authors: "#{crossref_authors(issue.paper.authors)}",
+    month: Time.now.month,
+    day: Time.now.day,
+    year: year,
+    issue: journal_issu},
+    volume: volume,
+    page: metadata["page"],
+    title: "#{metadata['title']}"
+  },
+  from: "markdown"
+  to: "opendocument"
+  'output-file': "#{paper_dir + '/paper.crossref.xml'}"
+  template: "#{paper_dir + '/crossref-template.xml'}"
+}
+
+pandoc_defaults_file_path = paper_dir + "/pandoc_defaults.yaml"
+File.open(defaults_pandoc_file_path, "w") do |f|
+  f.write pandoc_defaults.to_yaml
+end
+
+crossref_args = "--defaults #{defaults_pandoc_file_path} #{paper_dir + '/paper.tex'}"
 
 system("cp #{action_path}/resources/crossref-template.xml #{paper_dir}")
 
