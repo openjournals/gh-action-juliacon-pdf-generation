@@ -1,6 +1,7 @@
 require "theoj"
 require "yaml"
 require "securerandom"
+require_relative "crossref_xml_snippets"
 
 action_path = ENV["ACTION_PATH"]
 issue_id = ENV["ISSUE_ID"]
@@ -131,7 +132,7 @@ crossref_args = <<-PANDOCARGS
 -V paper_url=https://proceedings.juliacon.org/papers/#{metadata['doi']} \
 -V paper_pdf_url=https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf \
 -V citations="" \
--V authors="Author1" \
+-V authors="#{crossref_authors(issue.paper.authors)}" \
 -V month=#{Time.now.month} \
 -V day=#{Time.now.day} \
 -V year=#{year} \
