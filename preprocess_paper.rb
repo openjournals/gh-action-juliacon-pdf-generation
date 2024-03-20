@@ -123,23 +123,23 @@ system("echo '  ✅ File updated: #{bib_file_path}'")
 system("echo 'paper_dir=#{paper_dir}' >> $GITHUB_OUTPUT")
 
 crossref_args = "-V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')}" +
-  "-V doi_batch_id=#{SecureRandom.hex}" +
-  "-V formatted_doi=#{metadata['doi']}" +
-  "-V archive_doi=#{metadata['archive_doi']}" +
-  "-V review_issue_url=#{metadata['software_review_url']}" +
-  "-V paper_url=https://jcon.theoj.org/papers/117" +
-  "-V joss_resource_url=https://jcon.theoj.org" +
-  "-V citations=''" +
-  "-V authors='Author1'" +
-  "-V month=#{Time.now.month}" +
-  "-V day=#{Time.now.day}" +
-  "-V year=#{year}" +
-  "-V issue=#{journal_issue}" +
-  "-V volume=#{volume}" +
-  "-V page=#{metadata["page"]}" +
-  "-V title='" + metadata['title'] + "'" +
-  "-f markdown #{paper_dir + '/paper.tex'} -o #{paper_dir + '/paper.crossref.xml'}" +
-  "--template #{action_path}/resources/crossref-template.xml"
+  " -V doi_batch_id=#{SecureRandom.hex}" +
+  " -V formatted_doi=#{metadata['doi']}" +
+  " -V archive_doi=#{metadata['archive_doi']}" +
+  " -V review_issue_url=#{metadata['software_review_url']}" +
+  " -V paper_url=https://jcon.theoj.org/papers/117" +
+  " -V joss_resource_url=https://jcon.theoj.org" +
+  " -V citations=''" +
+  " -V authors='Author1'" +
+  " -V month=#{Time.now.month}" +
+  " -V day=#{Time.now.day}" +
+  " -V year=#{year}" +
+  " -V issue=#{journal_issue}" +
+  " -V volume=#{volume}" +
+  " -V page=#{metadata["page"]}" +
+  " -V title='" + metadata['title'] + "'" +
+  " -f markdown #{paper_dir + '/paper.tex'} -o #{paper_dir + '/paper.crossref.xml'}" +
+  " --template #{action_path}/resources/crossref-template.xml"
 
 system("echo 'crossref_args=#{crossref_args}' >> $GITHUB_OUTPUT")
 system("echo '  ✅ Crossref metadata ready'")
