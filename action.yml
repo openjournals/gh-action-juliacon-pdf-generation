@@ -44,7 +44,7 @@ runs:
       run: |
         bundle exec ruby ${{ github.action_path }}/preprocess_paper.rb
     - name: Generate pdf
-      uses: xu-cheng/texlive-action/full@v2
+      uses: xu-cheng/texlive-action@v2
       with:
         run: |
           cd ${{ steps.paper-finder.outputs.paper_dir }}
