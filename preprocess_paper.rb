@@ -170,7 +170,7 @@ pandoc_defaults = {
 }
 
 pandoc_defaults_file_path = paper_dir + "/pandoc_defaults.yaml"
-File.open(defaults_pandoc_file_path, "w") do |f|
+File.open(pandoc_defaults_file_path, "w") do |f|
   f.write pandoc_defaults.to_yaml
 end
 
