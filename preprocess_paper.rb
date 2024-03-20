@@ -140,7 +140,7 @@ crossref_args = <<-PANDOCARGS
 -V page=#{metadata["page"]} \
 -V title="#{metadata['title']}" \
 -f markdown #{paper_dir + '/paper.tex'} -t opendocument -o #{paper_dir + '/paper.crossref.xml'} \
---template #{action_path}/resources/crossref-template.xml
+--resource-path .:#{action_path} --template resources/crossref-template.xml
 PANDOCARGS
 
 system("echo 'crossref_args=#{crossref_args}' >> $GITHUB_OUTPUT")
