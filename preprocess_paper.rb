@@ -55,6 +55,8 @@ for k in ["title", "authors", "affiliations", "keywords", "bibliography"]
   end
 end
 
+system("echo '  ✅ Metadata generated at: #{metadata_file_path}'")
+
 # ENV variables or default for issue/volume/year
 journal_issue = ENV["JLCON_ISSUE"] || metadata["issue"]
 volume = ENV["JLCON_VOLUME"] || metadata["volume"]
@@ -87,6 +89,7 @@ header_file_path = paper_dir + "/header.tex"
 File.open(header_file_path, 'w') do |f|
   f.write header_tex
 end
+system("echo '  ✅ File updated: #{header_file_path}'")
 
 journal_dat_tex = <<~JOURNALDATTEX
   % **************GENERATED FILE, DO NOT EDIT**************
@@ -101,6 +104,7 @@ journal_dat_file_path = paper_dir + "/journal_dat.tex"
 File.open(journal_dat_file_path, 'w') do |f|
   f.write journal_dat_tex
 end
+system("echo '  ✅ File updated: #{journal_dat_file_path}'")
 
 bib_tex = <<~BIBTEX
   % **************GENERATED FILE, DO NOT EDIT**************
@@ -114,6 +118,7 @@ bib_file_path = paper_dir + "/bib.tex"
 File.open(bib_file_path, 'w') do |f|
   f.write bib_tex
 end
+system("echo '  ✅ File updated: #{bib_file_path}'")
 
 system("echo 'paper_dir=#{paper_dir}' >> $GITHUB_OUTPUT")
 
@@ -140,3 +145,4 @@ crossref_args = <<~CROSSREFARGS
 CROSSREFARGS
 
 system("echo 'crossref_args=#{crossref_args}' >> $GITHUB_OUTPUT")
+system("echo '  ✅ Crossref metadata ready'")
