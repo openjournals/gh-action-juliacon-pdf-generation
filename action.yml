@@ -59,8 +59,10 @@ runs:
     - name: Check results
       id: compilation-result
       shell: bash
+      env:
+        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
-        ruby ${{ github.action_path }}/check_result.rb ${{ steps.paper-finder.outputs.paper_dir }} pdf,crossref
+        bundle exec ruby ${{ github.action_path }}/check_result.rb ${{ steps.paper-finder.outputs.paper_dir }} pdf,crossref
 
 branding:
   icon: file-text

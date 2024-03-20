@@ -15,7 +15,7 @@ else
     raise "   !! ERROR: Failed to generate PDF file" if formats.include?("pdf")
   end
 
-  paper_crossref_path = paper_dir + "/paper.crossref"
+  paper_crossref_path = paper_dir + "/paper.crossref.xml"
   if File.exist?(paper_crossref_path)
     system("echo 'paper_crossref_path=#{paper_crossref_path}' >> $GITHUB_OUTPUT")
     system("echo '  ✅ Success! Crossref XML file generated at: #{paper_crossref_path}'")

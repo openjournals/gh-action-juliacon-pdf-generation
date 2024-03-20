@@ -138,7 +138,7 @@ crossref_args = "-V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')}" +
   "-V volume=#{volume}" +
   "-V page=#{metadata["page"]}" +
   "-V title='" + metadata['title'] + "'" +
-  "-f markdown #{paper_dir + '/paper.tex'} -o #{paper_dir + '/paper.crossref'}" +
+  "-f markdown #{paper_dir + '/paper.tex'} -o #{paper_dir + '/paper.crossref.xml'}" +
   "--template #{action_path}/resources/crossref-template.xml"
 
 system("echo 'crossref_args=#{crossref_args}' >> $GITHUB_OUTPUT")
