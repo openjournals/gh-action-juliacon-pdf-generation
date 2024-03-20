@@ -154,7 +154,7 @@ pandoc_defaults = {
     paper_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}",
     paper_pdf_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf",
     citations: "",
-    authors: "#{crossref_authors(issue.paper.authors)}",
+    crossref_authors: "#{crossref_authors(issue.paper.authors)}",
     month: Time.now.month,
     day: Time.now.day,
     year: year,
