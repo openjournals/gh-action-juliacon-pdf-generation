@@ -169,6 +169,9 @@ pandoc_defaults = {
   template: "#{paper_dir + '/crossref-template.xml'}"
 }
 
+pandoc_defaults[:variables].transform_keys!(&:to_s)
+pandoc_defaults.transform_keys!(&:to_s)
+
 pandoc_defaults_file_path = paper_dir + "/pandoc_defaults.yaml"
 File.open(pandoc_defaults_file_path, "w") do |f|
   f.write pandoc_defaults.to_yaml
