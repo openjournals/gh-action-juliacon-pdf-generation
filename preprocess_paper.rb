@@ -122,7 +122,7 @@ system("echo '  ✅ File updated: #{bib_file_path}'")
 
 system("echo 'paper_dir=#{paper_dir}' >> $GITHUB_OUTPUT")
 
-crossref_args = "-V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')}" +
+crossref_args = " -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')}" +
   " -V doi_batch_id=#{SecureRandom.hex}" +
   " -V formatted_doi=#{metadata['doi']}" +
   " -V archive_doi=#{metadata['archive_doi']}" +

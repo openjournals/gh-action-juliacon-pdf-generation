@@ -52,7 +52,7 @@ runs:
           latexmk -bibtex -pdf paper.tex
           latexmk -c
     - name: Generate crossref.xml
-      uses: docker://pandoc/core:3.1.1
+      uses: docker://pandoc/latex:3.1.1
       with:
         args: >-
           ${{ steps.paper-finder.outputs.crossref_args }}
