@@ -1,7 +1,7 @@
 require "theoj"
 require "yaml"
 require "securerandom"
-require_relative "crossref_xml_snippets"
+require_relative "resources/crossref_xml_snippets"
 
 action_path = ENV["ACTION_PATH"]
 issue_id = ENV["ISSUE_ID"]
