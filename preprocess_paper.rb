@@ -158,7 +158,7 @@ pandoc_defaults = {
     month: Time.now.month,
     day: Time.now.day,
     year: year,
-    issue: journal_issu},
+    issue: journal_issue,
     volume: volume,
     page: metadata["page"],
     title: "#{metadata['title']}"
