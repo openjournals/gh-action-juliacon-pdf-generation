@@ -127,8 +127,8 @@ crossref_args = " -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')}" +
   " -V formatted_doi=#{metadata['doi']}" +
   " -V archive_doi=#{metadata['archive_doi']}" +
   " -V review_issue_url=#{metadata['software_review_url']}" +
-  " -V paper_url=https://jcon.theoj.org/papers/117" +
-  " -V joss_resource_url=https://jcon.theoj.org" +
+  " -V paper_url=https://proceedings.juliacon.org/papers/#{metadata['doi']}" +
+  " -V paper_pdf_url=https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf" +
   " -V citations=''" +
   " -V authors='Author1'" +
   " -V month=#{Time.now.month}" +
