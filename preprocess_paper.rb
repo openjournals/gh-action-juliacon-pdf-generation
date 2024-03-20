@@ -137,7 +137,7 @@ crossref_args = "-V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')}" +
   "-V issue=#{journal_issue}" +
   "-V volume=#{volume}" +
   "-V page=#{metadata["page"]}" +
-  "-V title='" + metadata['title']} + "'" +
+  "-V title='" + metadata['title'] + "'" +
   "-f markdown #{paper_dir + '/paper.tex'} -o #{paper_dir + '/paper.crossref'}" +
   "--template #{action_path}/resources/crossref-template.xml"
 
