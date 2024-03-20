@@ -1,3 +1,5 @@
+require "nokogiri"
+
 def crossref_authors(authors)
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.contributors {
