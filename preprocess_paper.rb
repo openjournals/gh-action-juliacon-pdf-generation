@@ -163,9 +163,9 @@ pandoc_defaults = {
     page: metadata["page"],
     title: "#{metadata['title']}"
   },
-  from: "markdown"
-  to: "opendocument"
-  'output-file': "#{paper_dir + '/paper.crossref.xml'}"
+  from: "markdown",
+  to: "opendocument",
+  'output-file': "#{paper_dir + '/paper.crossref.xml'}",
   template: "#{paper_dir + '/crossref-template.xml'}"
 }
 
