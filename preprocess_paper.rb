@@ -174,7 +174,7 @@ File.open(defaults_pandoc_file_path, "w") do |f|
   f.write pandoc_defaults.to_yaml
 end
 
-crossref_args = "--defaults #{defaults_pandoc_file_path} #{paper_dir + '/paper.tex'}"
+crossref_args = "--defaults #{pandoc_defaults_file_path} #{paper_dir + '/paper.tex'}"
 
 system("cp #{action_path}/resources/crossref-template.xml #{paper_dir}")
 
