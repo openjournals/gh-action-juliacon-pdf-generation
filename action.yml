@@ -43,14 +43,14 @@ runs:
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
         bundle exec ruby ${{ github.action_path }}/preprocess_paper.rb
-    - name: Generate pdf
-      uses: xu-cheng/texlive-action@v2
-      with:
-        run: |
-          cd ${{ steps.paper-finder.outputs.paper_dir }}
-          latexmk -c
-          latexmk -bibtex -pdf paper.tex
-          latexmk -c
+    # - name: Generate pdf
+    #   uses: xu-cheng/texlive-action@v2
+    #   with:
+    #     run: |
+    #       cd ${{ steps.paper-finder.outputs.paper_dir }}
+    #       latexmk -c
+    #       latexmk -bibtex -pdf paper.tex
+    #       latexmk -c
     - name: Generate crossref.xml
       uses: docker://pandoc/latex:3.1.1
       with:
