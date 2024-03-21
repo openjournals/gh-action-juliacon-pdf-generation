@@ -4,6 +4,9 @@ GEM
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     base64 (0.2.0)
+    bibtex-ruby (6.1.0)
+      latex-decode (~> 0.0)
+      racc (~> 1.7)
     cgi (0.4.1)
     charlock_holmes (0.7.7)
     commonmarker (1.0.4-aarch64-linux)
@@ -22,6 +25,7 @@ GEM
       charlock_holmes (~> 0.7.7)
       mini_mime (~> 1.0)
       rugged (~> 1.0)
+    latex-decode (0.4.0)
     mini_mime (1.1.5)
     net-http (0.4.1)
       uri
@@ -62,6 +66,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bibtex-ruby
   nokogiri
   theoj
 
