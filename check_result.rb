@@ -10,8 +10,16 @@ else
   paper_pdf_path = paper_dir + "/paper.pdf"
   if File.exist?(paper_pdf_path)
     system("echo 'paper_pdf_path=#{paper_pdf_path}' >> $GITHUB_OUTPUT")
-    system("echo 'Success! PDF file generated at: #{paper_pdf_path}'")
+    system("echo '  ✅ Success! PDF file generated at: #{paper_pdf_path}'")
   else
     raise "   !! ERROR: Failed to generate PDF file" if formats.include?("pdf")
+  end
+
+  paper_crossref_path = paper_dir + "/paper.crossref.xml"
+  if File.exist?(paper_crossref_path)
+    system("echo 'paper_crossref_path=#{paper_crossref_path}' >> $GITHUB_OUTPUT")
+    system("echo '  ✅ Success! Crossref XML file generated at: #{paper_crossref_path}'")
+  else
+    raise "   !! ERROR: Failed to generate Crossref XML file" if formats.include?("crossref")
   end
 end

@@ -15,6 +15,9 @@ outputs:
   pdf_path:
     description: "Path to the generated PDF file"
     value: ${{ steps.compilation-result.outputs.paper_pdf_path }}
+  crossref_path:
+    description: "Path to the generated Crossref XML file"
+    value: ${{ steps.compilation-result.outputs.paper_crossref_path }}
   paper_file_path:
     description: "Path to the paper's .tex source file"
     value: ${{ steps.paper-finder.outputs.paper_file_path }}
@@ -33,6 +36,7 @@ runs:
       id: paper-finder
       shell: bash
       env:
+        ACTION_PATH: ${{ github.action_path }}
         ISSUE_ID: ${{ inputs.issue_id }}
         REPO_URL: ${{ inputs.repository_url }}
         PAPER_BRANCH: ${{ inputs.branch }}
@@ -40,18 +44,25 @@ runs:
       run: |
         bundle exec ruby ${{ github.action_path }}/preprocess_paper.rb
     - name: Generate pdf
-      uses: xu-cheng/texlive-action/full@v1
+      uses: xu-cheng/texlive-action@v2
       with:
         run: |
           cd ${{ steps.paper-finder.outputs.paper_dir }}
           latexmk -c
           latexmk -bibtex -pdf paper.tex
           latexmk -c
+    - name: Generate crossref.xml
+      uses: docker://pandoc/latex:3.1.1
+      with:
+        args: >-
+          ${{ steps.paper-finder.outputs.crossref_args }}
     - name: Check results
       id: compilation-result
       shell: bash
+      env:
+        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
-        ruby ${{ github.action_path }}/check_result.rb ${{ steps.paper-finder.outputs.paper_dir }} pdf
+        bundle exec ruby ${{ github.action_path }}/check_result.rb ${{ steps.paper-finder.outputs.paper_dir }} pdf,crossref
 
 branding:
   icon: file-text

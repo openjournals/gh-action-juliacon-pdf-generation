@@ -1,6 +1,9 @@
 require "theoj"
 require "yaml"
+require "securerandom"
+require_relative "resources/crossref_xml_snippets"
 
+action_path = ENV["ACTION_PATH"]
 issue_id = ENV["ISSUE_ID"]
 repo_url = ENV["REPO_URL"]
 repo_branch = ENV["PAPER_BRANCH"]
@@ -53,6 +56,8 @@ for k in ["title", "authors", "affiliations", "keywords", "bibliography"]
   end
 end
 
+system("echo '  ✅ Metadata generated at: #{metadata_file_path}'")
+
 # ENV variables or default for issue/volume/year
 journal_issue = ENV["JLCON_ISSUE"] || metadata["issue"]
 volume = ENV["JLCON_VOLUME"] || metadata["volume"]
@@ -85,6 +90,7 @@ header_file_path = paper_dir + "/header.tex"
 File.open(header_file_path, 'w') do |f|
   f.write header_tex
 end
+system("echo '  ✅ File updated: #{header_file_path}'")
 
 journal_dat_tex = <<~JOURNALDATTEX
   % **************GENERATED FILE, DO NOT EDIT**************
@@ -99,6 +105,7 @@ journal_dat_file_path = paper_dir + "/journal_dat.tex"
 File.open(journal_dat_file_path, 'w') do |f|
   f.write journal_dat_tex
 end
+system("echo '  ✅ File updated: #{journal_dat_file_path}'")
 
 bib_tex = <<~BIBTEX
   % **************GENERATED FILE, DO NOT EDIT**************
@@ -112,6 +119,46 @@ bib_file_path = paper_dir + "/bib.tex"
 File.open(bib_file_path, 'w') do |f|
   f.write bib_tex
 end
-
+system("echo '  ✅ File updated: #{bib_file_path}'")
 
 system("echo 'paper_dir=#{paper_dir}' >> $GITHUB_OUTPUT")
+
+pandoc_defaults = {
+  variables: {
+    timestamp: Time.now.strftime('%Y%m%d%H%M%S'),
+    doi_batch_id: SecureRandom.hex,
+    formatted_doi: metadata['doi'],
+    archive_doi: metadata['archive_doi'] || "Pending",
+    review_issue_url: metadata['software_review_url'],
+    paper_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}",
+    paper_pdf_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf",
+    citations: "#{generate_citations(paper_path, File.join(paper_dir, issue.paper.bibliography_path))}",
+    crossref_authors: "#{crossref_authors(issue.paper.authors)}",
+    month: Time.now.month,
+    day: Time.now.day,
+    year: year,
+    issue: journal_issue,
+    volume: volume,
+    page: metadata["page"],
+    title: "#{metadata['title']}"
+  },
+  from: "markdown",
+  to: "opendocument",
+  'output-file': "#{paper_dir + '/paper.crossref.xml'}",
+  template: "#{paper_dir + '/crossref-template.xml'}"
+}
+
+pandoc_defaults[:variables].transform_keys!(&:to_s)
+pandoc_defaults.transform_keys!(&:to_s)
+
+pandoc_defaults_file_path = paper_dir + "/pandoc_defaults.yaml"
+File.open(pandoc_defaults_file_path, "w") do |f|
+  f.write pandoc_defaults.to_yaml
+end
+
+crossref_args = "--defaults #{pandoc_defaults_file_path} #{paper_dir + '/paper.tex'}"
+
+system("cp #{action_path}/resources/crossref-template.xml #{paper_dir}")
+
+system("echo 'crossref_args=#{crossref_args}' >> $GITHUB_OUTPUT")
+system("echo '  ✅ Crossref metadata ready'")
