@@ -34,10 +34,10 @@ end
 # Returns an XML fragment <citations></citations> with or
 # without citations within
 # TODO: should probably use Ruby builder templates here
-def generate_citations(paper_path)
+def generate_citations(paper_path, bib_file_path)
   citations = File.read(paper_path).scan(/(?<=\\cite\{)\w+/).map {|c| c.prepend("@")}
 
-  entries = BibTeX.open(@bib_file, filter: :latex)
+  entries = BibTeX.open(bib_file_path, filter: :latex)
   ref_count = 1
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.citation_list {

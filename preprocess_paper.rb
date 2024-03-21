@@ -132,7 +132,7 @@ pandoc_defaults = {
     review_issue_url: metadata['software_review_url'],
     paper_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}",
     paper_pdf_url: "https://proceedings.juliacon.org/papers/#{metadata['doi']}.pdf",
-    citations: "#{generate_citations(paper_path)}",
+    citations: "#{generate_citations(File.join(File.dirname(paper_dir, issue.paper.bibliography_path))}",
     crossref_authors: "#{crossref_authors(issue.paper.authors)}",
     month: Time.now.month,
     day: Time.now.day,
