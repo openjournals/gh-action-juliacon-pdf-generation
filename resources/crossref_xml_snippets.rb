@@ -63,7 +63,7 @@ def generate_citations(paper_path, bib_file_path)
           # Escapes DOI in case there are weird characters in it
           xml.doi bare_doi.encode(xml: :text)
         else
-          xml.unstructured_citation entry.values.map {|v| v.to_s.encode(xml: :text)}.join(", ")
+          xml.unstructured_citation entry.to_h.values.map {|v| v.to_s.encode(xml: :text)}.join(", ")
         end
       }
       ref_count += 1
